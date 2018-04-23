@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
+						http://www.springframework.org/schema/mvc/spring-mvc.xsd
+						http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- 缺省注册类的改变， 
+	相当于注册了DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter两个bean，
+	配置一些messageconverter。即解决了@Controller注解的使用前提配置。-->
+	<annotation-driven />
+	<!-- spring可以自动去扫描base-pack下面或者子包下面的java文件，如果扫描到有@Component @Controller@Service等这些注解的类，则把这些类注册为bean -->
+	<context:component-scan base-package="com.kx" >
+	
+	</context:component-scan>
+	
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/css/**" location="/css/" />
+	<resources mapping="/images/**" location="/images/" />
+	<resources mapping="/img/**" location="/img/" />
+	<resources mapping="/js/**" location="/js/" />
+	<resources mapping="/less/**" location="/less/" />
+	<resources mapping="/static/**" location="/static/" />
+	<resources mapping="/assets/**" location="/assets/" />
+	<resources mapping="/views/**" location="/views/" />
+	<resources mapping="/mobile/**" location="/mobile/" />
+	<!-- Jackson转换器 -->
+	<beans:bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+	<!-- fastjson转换器 -->
+	<beans:bean id="fastJsonHttpMessageConverter"  class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"/>
+	<beans:bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"  > 
+	    <beans:property name="messageConverters">
+	       <beans:list>
+	          <beans:ref bean="fastJsonHttpMessageConverter" /><!-- json转换器 -->
+	       </beans:list>
+	    </beans:property>
+	 </beans:bean>
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <beans:property name="defaultEncoding" value="UTF-8"/>
+	    <beans:property name="maxUploadSize" value="32505856" /><!-- 上传文件大小限制为31M，31*1024*1024 -->
+	    <beans:property name="maxInMemorySize" value="4096" />
+	</beans:bean>
+	
+</beans:beans>
