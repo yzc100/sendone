@@ -4,17 +4,22 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import com.kx.stock.cache.IStockCacheService;
 import com.kx.sys.service.ICacheService;
  
 public class SpringContextHolder implements ApplicationContextAware  {
 	private static ApplicationContext applicationContext;
 	@Autowired
 	ICacheService cacheService;
+	@Autowired
+	IStockCacheService stockCacheService;
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		SpringContextHolder.applicationContext = applicationContext;
 		cacheService.loadCache();
+		stockCacheService.loadCache();
 	}
 	/**
 	* ȡ�ô洢�ھ�̬�����е�ApplicationContext.

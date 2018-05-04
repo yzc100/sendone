@@ -1,5 +1,3 @@
-/WEB-INF/
-/com/
 /css/
 /font-awesome/
 /font/
@@ -9,4 +7,5 @@
 /index.html
 /index.jsp
 /js/
+/com/
 /pay.jsp
